@@ -1,0 +1,271 @@
+.brackets {
+  position: relative;
+  width: 1600px;
+  height: 1167px;
+  background: #fff url('brackets_1600.png') top left no-repeat;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+
+  .team {
+    position: relative;
+    height: 18px;
+  }
+
+  .bracket_1, .bracket_2 {
+    position: relative;
+    text-align: left;
+    .team {
+      margin-left: 5px;
+    }
+  }
+
+  .bracket_3, .bracket_4 {
+    position: relative;
+    text-align: right;
+    .team {
+      margin-right: 5px;
+    }
+  }
+
+  .first_four {
+    > div {
+      position: absolute;
+      width: 160px;
+
+      &.bracket {
+        top: 155px;
+        .team {
+          margin: 0;
+          &.pos_1 {
+            margin-top: 12px;
+          }
+        }
+      }
+
+      &.bracket_1 {
+        left: 310px;
+      }
+      &.bracket_2 {
+        left: 526px;
+      }
+      &.bracket_3 {
+        left: 912px;
+      }
+      &.bracket_4 {
+        left: 1129px;
+      }
+    }
+  }
+
+  .first_round {
+    > div {
+      position: absolute;
+      width: 202px;
+      height: 472px;
+
+      .team {
+        margin-top: 11.5px;
+      }
+
+      &.bracket_1 {
+        top: 200px;
+        left: 50px;
+      }
+      &.bracket_2 {
+        top: 675px;
+        left: 50px;
+      }
+      &.bracket_1, &.bracket_2 {
+        .team {
+          margin-left: 20px;
+        }
+      }
+
+      &.bracket_3 {
+        top: 200px;
+        left: 1347px;
+      }
+      &.bracket_4 {
+        top: 675px;
+        left: 1347px;
+      }
+      &.bracket_3, &.bracket_4 {
+        .team {
+          margin-right: 20px;
+        }
+      }
+    }
+  }
+
+  .second_round {
+    > div {
+      position: absolute;
+      width: 120px;
+      height: 435px;
+
+      .team {
+        &.pos_0 {
+          margin-top: 0px;
+        }
+        &.pos_1, &.pos_3, &.pos_5, &.pos_7 {
+          margin-top: 40px;
+        }
+        &.pos_2, &.pos_4, &.pos_6 {
+          margin-top: 42px;
+        }
+      }
+
+      &.bracket_1 {
+        top: 227px;
+        left: 252px;
+      }
+      &.bracket_2 {
+        top: 701px;
+        left: 252px;
+      }
+      &.bracket_3 {
+        top: 227px;
+        left: 1226px;
+      }
+      &.bracket_4 {
+        top: 701px;
+        left: 1226px;
+      }
+    }
+  }
+
+  .sweet_sixteen {
+    > div {
+      position: absolute;
+      width: 103px;
+      height: 378px;
+
+      .team {
+        margin-top: 100px;
+
+        &.pos_0 {
+          margin-top: 0px;
+        }
+      }
+
+      &.bracket_1 {
+        top: 257px;
+        left: 372px;
+      }
+      &.bracket_2 {
+        top: 731px;
+        left: 372px;
+      }
+      &.bracket_3 {
+        top: 257px;
+        left: 1123px;
+      }
+      &.bracket_4 {
+        top: 731px;
+        left: 1123px;
+      }
+    }
+  }
+
+  .elite_eight {
+    > div {
+      position: absolute;
+      width: 98px;
+      height: 260px;
+
+      .team {
+        margin-top: 217px;
+
+        &.pos_0 {
+          margin-top: 0px;
+        }
+      }
+
+      &.bracket_1 {
+        top: 315px;
+        left: 475px;
+      }
+      &.bracket_2 {
+        top: 790px;
+        left: 475px;
+      }
+      &.bracket_3 {
+        top: 315px;
+        left: 1025px;
+      }
+      &.bracket_4 {
+        top: 790px;
+        left: 1025px;
+      }
+    }
+  }
+
+  .final_four {
+    > div {
+      position: absolute;
+      width: 100px;
+      height: 26px;
+
+      &.bracket_1 {
+        top: 432px;
+        left: 573px;
+      }
+      &.bracket_2 {
+        top: 906px;
+        left: 573px;
+      }
+      &.bracket_3 {
+        top: 432px;
+        left: 925px;
+      }
+      &.bracket_4 {
+        top: 906px;
+        left: 925px;
+      }
+    }
+  }
+
+  .championship {
+    > div {
+      position: absolute;
+      width: 130px;
+      height: 30px;
+      text-align: center;
+      font-weight: bold;
+
+      .team {
+        height: 23px;
+        margin: 0;
+        padding-top: 7px;
+      }
+
+      &.bracket_1 {
+        top: 672px;
+        left: 580px;
+      }
+      &.bracket_2 {
+        top: 672px;
+        left: 887px;
+      }
+    }
+  }
+
+  .champion {
+    > div {
+      position: absolute;
+      width: 143px;
+      height: 44px;
+      top: 665px;
+      left: 727px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+
+      .team {
+        height: 38px;
+        padding-top: 12px;
+        margin: 0;
+      }
+    }
+  }
+}
