@@ -19,7 +19,7 @@ class Round
   def play
     puts "\n\n***\n\nSimulating #{name}...\n"
     @winners = @games.map do |game|
-      game.play(sims)
+      game.play
       game.winner
     end
     puts "\n\n*** #{name} winners: \n#{@winners.join("\n")}\n"
