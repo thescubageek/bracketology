@@ -5,7 +5,7 @@ module TournamentHelper
 
   def render_teams(teams)
     Array.wrap(teams).each_with_index.map do |team, idx|
-      "<div class='team pos_#{idx}'>#{team.name}</div>"
+      "<div class='team pos_#{idx}'>#{team}</div>"
     end.join("\n")
   end
 end
