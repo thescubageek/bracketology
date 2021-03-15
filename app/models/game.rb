@@ -24,13 +24,7 @@ class Game
   #
   # @return [Team] winning team
   def simulate
-    random = SecureRandom.rand(1.0)
-    puts "Simulating #{home_team} vs #{away_team}..."
-    winning_team = random <= home_team_odds ? home_team : away_team
-    puts "> #{home_team.name} odds: #{home_team_odds.round(4)}, "\
-          "sim results: #{random.round(4)}, "\
-          "winner: #{winning_team}"
-    winning_team
+    SecureRandom.rand(1.0) <= home_team_odds ? home_team : away_team
   end
 
   # Simulates playing the game and assigns the winner
