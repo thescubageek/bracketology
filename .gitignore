@@ -33,3 +33,4 @@
 # Ignore Mac files
 /.DS_Store
 */.DS_Store
+/brackets/results/.DS_Store
