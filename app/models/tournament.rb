@@ -1,8 +1,9 @@
 # NCAA Basketball Tournament simulator
 class Tournament
   IMPORT_TOURNAMENT_PATH = Rails.root.join('brackets', 'import').freeze
-  DEFAULT_IMPORT_FILE = -'64_team_test.json'
+  DEFAULT_IMPORT_FILE = -'ncaa_2021.json'
   EXPORT_TOURNAMENT_PATH = Rails.root.join('brackets', 'export').freeze
+  RESULTS_TOURNAMENT_PATH = Rails.root.join('brackets', 'results').freeze
 
   ROUND_NAMES = [
     'First Round',
@@ -36,6 +37,38 @@ class Tournament
         Team.new(team['name'], team['rank'])
       end
     end
+
+    def calculate_final_results(num = nil, path = EXPORT_TOURNAMENT_PATH)
+      files = Dir.glob("#{path}/*")
+      num ||= files.count
+      files = files.shuffle.take(num) if num != files.count
+
+      results = {}
+      files.each do |file|
+        JSON.parse(File.read(file)).each do |round_name, winners|
+          results[round_name] ||= []
+
+          winners.each_with_index do |winner, idx|
+            results[round_name][idx] ||= {}
+            team = Team.new(winner['name'], winner['rank'])
+            key = team.to_s
+            results[round_name][idx][key] ||= { 'name' => team.name, 'rank' => team.rank, 'count' => 0 }
+            results[round_name][idx][key]['count'] += 1
+          end
+        end
+      end
+
+      final_winners = results.reduce({}) do |hash, (round_name, games)|
+        winners = games.map do |game_winners|
+          game_winners.to_a.sort { |a, b| b[1]['count'] <=> a[1]['count'] }.first[1]
+        end
+        hash.merge!(round_name => winners)
+      end
+
+      version = DateTime.now.strftime('%Q')
+      File.write("#{RESULTS_TOURNAMENT_PATH}/#{num}_#{version}.json", final_winners.to_json)
+      final_winners
+    end
   end
 
   # Creates a new tournament simulation
@@ -59,19 +92,24 @@ class Tournament
   # Plays a simulation of the tournament
   #
   # @param should_export [Boolean] if true, export results of the simulation
+  # @param sims [Integer] number of tournaments to simulate if exporting
   # @return [Team] championship winner
-  def play(should_export = false)
-    reset
+  def play(should_export = false, sims = 1)
+    sims = 1 unless should_export
 
-    simulate_first_four
+    sims.times do |_|
+      reset
+      simulate_first_four
 
-    @rounds.push(build_round(@teams))
-    simulate while @winner.blank?
+      @rounds.push(build_round(@teams))
+      simulate while @winner.blank?
 
-    puts "#{year} tournament winner: #{@winner}"
-    export if should_export
+      puts "#{year} tournament winner: #{@winner}"
+      export if should_export
+      sleep 0.1 if sims > 1
 
-    winner
+      winner
+    end
   end
 
   # Simulators the first four round of games and adds the winners to the
@@ -84,7 +122,7 @@ class Tournament
 
     ff_index = 0
     @teams.each_with_index do |team, idx|
-      if team.rank == 16
+      if team.name == "ff_#{ff_index}"
         @teams[idx] = @first_four_winners[ff_index]
         ff_index += 1
       end
