@@ -14,7 +14,14 @@ class Tournament
     'Championship'
   ].freeze
 
+  RULE_BONUSES = [nil, '+', '-'].freeze
+  RULES = [
+    points: [1, 2, 4, 8, 16, 32],
+    scale: '+'
+  ].freeze
+
   attr_reader :year, :rounds, :first_four, :teams, :winner
+              :max_total_points, :probability
 
   class << self
     # Imports the tournament teams from a JSON file
@@ -80,6 +87,8 @@ class Tournament
     @year = year
     @first_four = first_four
     @teams = teams
+    @bonus_operator = RULES[:operator]
+    @round_points = RULES[:points]
   end
 
   # Resets the rounds and winners variables
@@ -107,6 +116,9 @@ class Tournament
       puts "#{year} tournament winner: #{@winner}"
       export if should_export
       sleep 0.1 if sims > 1
+
+      @max_total_points = calc_max_total_points
+      @probability = calc_probability
 
       winner
     end
@@ -160,6 +172,23 @@ class Tournament
       i += 2
     end
     round
+  end
+
+  def calc_max_total_points
+    total = 0
+    
+    @rounds.each_with_index do |round, idx|
+      round_points = @round_points[idx]
+      
+      round_bonus = 0 unless @round_operator.nil?
+
+      total += round_points + (round.winner.rank.__send__(round_operator, round.winner.rank))
+    end
+    total
+  end
+  
+  def calc_probability
+    0.0
   end
 
   # Exports the winners to a JSON file
