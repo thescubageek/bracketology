@@ -19,7 +19,7 @@ class TournamentController < ApplicationController
     svg = qrcode.as_svg(
       color: '000',
       shape_rendering: 'crispEdges',
-      module_size: 4,
+      module_size: 3,
       standalone: true,
       use_path: true
     )
@@ -34,7 +34,7 @@ class TournamentController < ApplicationController
   def submit_phrase
     phrase = params.require(:phrase)
     @tourney_code = Tournament.create_tourney_code_from_phrase(phrase)
-    redirect_to "/code/#{@tourney_code}"
+    redirect_to "/c/#{@tourney_code}"
   end
 
   private

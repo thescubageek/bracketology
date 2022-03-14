@@ -56,26 +56,6 @@
     white-space: nowrap;
   }
 
-  .tourney_code {
-    position: absolute;
-    width: 180px;
-    top: 740px;
-    left: 717px;
-    text-align: center;
-    
-    .code {
-      font-weight: bold;
-      word-wrap: nowrap;
-      user-select: all;
-      font-weight: 700;
-      font-size: 20px;
-    }
-
-    .qr_code {
-      margin-top: 10px;
-    }
-  }
-
   .bracket_1, .bracket_2 {
     position: relative;
     text-align: left;
@@ -331,6 +311,47 @@
         padding-top: 12px;
         margin: 0;
       }
+    }
+  }
+
+  .stats {
+    position: absolute;
+    width: 200px;
+    background-color: #ccc;
+    height: 67px;
+    border-radius: 8px;
+    padding: 10px;
+    top: 480px;
+    left: 690px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+
+    > div {
+      padding-bottom: 5px;
+    }
+  }
+
+  .tourney_code {
+    position: absolute;
+    width: 200px;
+    top: 740px;
+    left: 690px;
+    text-align: center;
+    background-color: #ccc;
+    border-radius: 8px;
+    padding: 10px;
+
+    .code {
+      font-weight: bold;
+      word-wrap: nowrap;
+      user-select: all;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .qr_code {
+      margin-top: 10px;
     }
   }
 }
