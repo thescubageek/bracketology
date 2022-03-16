@@ -55,7 +55,7 @@
   <div class="stats">
     <div>Maximum Points: <%= @tournament.max_total_points %></div>
     <div>Avg Probability: <%= (@tournament.probability*100).round(4) %>%</div>
-    <div>Projected Points: <%= (@tournament.probability * @tournament.max_total_points).floor %></div>
+    <div>Projected Points: <%= @tournament.projected_points %></div>
     <div>Tournament Key: <%= @tournament.key %></div>
   </div>
 </div>

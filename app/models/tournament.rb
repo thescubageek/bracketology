@@ -24,7 +24,7 @@ class Tournament
   }.freeze
 
   attr_reader :year, :rounds, :first_four, :teams, :winner,
-              :max_total_points, :probability, :key
+              :max_total_points, :probability, :projected_points, :key
 
   class << self
     # Imports the tournament teams from a JSON file
@@ -103,6 +103,7 @@ class Tournament
     @probability = 0.0
     @key = ''
     @points = 0
+    @projected_points = 0
   end
 
   # Plays a simulation of the tournament
@@ -122,8 +123,14 @@ class Tournament
 
       @max_total_points = calc_max_total_points
       @probability = calc_probability
+      @projected_points = (probability * max_total_points).floor
 
-      results = { winner: @winner, points: @max_total_points, probability: @probability }
+      results = {
+        winner: @winner,
+        points: @max_total_points,
+        probability: @probability,
+        projected_points: @projected_points
+      }
 
       puts "#{year} tournament winner: #{@winner}; max points: #{@max_total_points} (#{(@probability*100).round(4)}%)"
 
@@ -182,7 +189,9 @@ class Tournament
     round = Round.new([], round_num, round_name, RULES[:points][round_num], RULES[:operator])
 
     while i + 1 < round_teams.count
-      round.games.push(Game.new(round_teams[i], round_teams[i + 1], RULES[:points][round_num], RULES[:operator]))
+      round.games.push(
+        Game.new(round_teams[i], round_teams[i + 1], RULES[:points][round_num], RULES[:operator])
+      )
       i += 2
     end
     round
@@ -194,7 +203,7 @@ class Tournament
       points += round.points
     end
   end
-  
+
   # Calculate the average probability of the bracket
   def calc_probability
     game_count = 0
@@ -219,7 +228,8 @@ class Tournament
       export_json["#{round.name} Winners"] = round.winners
     end
 
-    export_file = "#{EXPORT_TOURNAMENT_PATH}/#{@key}.json"
+    prefix = "%03d" % @projected_points
+    export_file = "#{EXPORT_TOURNAMENT_PATH}/#{prefix}_#{@key}.json"
     File.write(export_file, export_json.to_json)
     export_json
   end
