@@ -114,6 +114,8 @@ class Tournament
   def play(should_export = false, sims = 1)
     sims = 1 unless should_export
 
+    top_projection = 0
+
     sims.times do |i|
       puts "Simulation #{i + 1}/#{sims}..."
 
@@ -126,19 +128,30 @@ class Tournament
       @max_total_points = calc_max_total_points
       @probability = calc_probability
       @projected_points = (probability * max_total_points).floor
+      @key = format_key
 
       results = {
         winner: @winner,
         points: @max_total_points,
         probability: @probability,
-        projected_points: @projected_points
+        projected_points: @projected_points,
+        key: @key
       }
+
+      # Export if it is equal to top as well, this bubbles up resuls
+      if @projected_points >= top_projection
+        top_projection = @projected_points
+        export if should_export
+
+        puts "**** Top projected score updated: #{top_projection}"
+      end
+
 
       # puts "#{year} tournament winner: #{@winner}; max points: #{@max_total_points} (#{(@probability*100).round(4)}%)"
 
       # puts "Key: #{@key}"
-      @key = format_key
-      export if should_export
+      
+     
       # sleep 0.1 if sims > 1
 
       results
