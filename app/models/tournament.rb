@@ -111,7 +111,7 @@ class Tournament
   # @param should_export [Boolean] if true, export results of the simulation
   # @param sims [Integer] number of tournaments to simulate if exporting
   # @return [Team] championship winner
-  def play(should_export = false, sims = 1)
+  def play(should_export = false, sims = 1, min_rank = 16)
     sims = 1 unless should_export
 
     top_projection = 0
@@ -138,8 +138,10 @@ class Tournament
         key: @key
       }
 
-      # Export if it is equal to top as well, this bubbles up resuls
-      if @projected_points >= top_projection
+      ranks = @rounds.flat_map { |r| r.winners.map(&:rank) }.uniq
+
+      # Export if it is equal to top as well, this bubbles up results
+      if !ranks.include?(min_rank) && @projected_points >= top_projection
         top_projection = @projected_points
         export if should_export
 
