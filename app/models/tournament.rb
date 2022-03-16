@@ -2,6 +2,8 @@
 
 # NCAA Basketball Tournament simulator
 class Tournament
+  KEY_MAP = (('A'..'Z').to_a + ('a'..'z').to_a + ('0'..'9').to_a + ['+', '$']).freeze
+
   IMPORT_TOURNAMENT_PATH = Rails.root.join('brackets', 'import').freeze
   DEFAULT_IMPORT_FILE = 'ncaa_2022.json'
   EXPORT_TOURNAMENT_PATH = Rails.root.join('brackets', 'export').freeze
@@ -212,6 +214,7 @@ class Tournament
   # @return [Hash] exported JSON hash
   def export
     # export_json = { 'First Four Winners' => @first_four_winners }
+    export_json = {}
     @rounds.each do |round|
       export_json["#{round.name} Winners"] = round.winners
     end
@@ -224,13 +227,24 @@ class Tournament
   # Formats a base-32 key representing all of the winners which can later be used
   #   to import results
   def format_key
-    @rounds.reduce('') do |key, round|
-      round.winners.each do |winner|
-        key += "%02d" % winner.rank
+    binary = @rounds.reduce('') do |k, round|
+      round.games.each do |game|
+        k += game.home_team_won? ? '1' : '0'
       end
-      key
+      k
+    end
+    # pad out remaining zeros to make it divisble by six (66 bits)
+    binary += '000'
+
+    i = 0
+    j = 5
+    ints = []
+    while j <= binary.size
+      ints << binary[i..j].to_i(2)
+      i = j + 1
+      j += 6
     end
 
-    key.to_i.to_s(32)
+    ints.map { |i| KEY_MAP[i] }.join('')
   end
 end

@@ -53,6 +53,10 @@ class Game
     away_team.rank.to_f / (home_team.rank.to_f + away_team.rank.to_f)
   end
 
+  def home_team_won?
+    @winner == @home_team
+  end
+
   def format_probability
     "#{(100.0 * probability).round(4)}%"
   end

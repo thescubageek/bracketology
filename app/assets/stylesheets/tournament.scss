@@ -269,4 +269,22 @@
       }
     }
   }
+
+  .stats {
+    position: absolute;
+    width: 200px;
+    background-color: #ccc;
+    height: 110px;
+    border-radius: 8px;
+    padding: 10px;
+    top: 765px;
+    left: 690px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+
+    > div {
+      padding-bottom: 5px;
+    }
+  }
 }
