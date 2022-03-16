@@ -114,7 +114,9 @@ class Tournament
   def play(should_export = false, sims = 1)
     sims = 1 unless should_export
 
-    sims.times do |_|
+    sims.times do |i|
+      puts "Simulation #{i + 1}/#{sims}..."
+
       reset
       simulate_first_four if first_four.present?
 
@@ -132,13 +134,12 @@ class Tournament
         projected_points: @projected_points
       }
 
-      puts "#{year} tournament winner: #{@winner}; max points: #{@max_total_points} (#{(@probability*100).round(4)}%)"
+      # puts "#{year} tournament winner: #{@winner}; max points: #{@max_total_points} (#{(@probability*100).round(4)}%)"
 
+      # puts "Key: #{@key}"
       @key = format_key
-      puts "Key: #{@key}"
-
       export if should_export
-      sleep 0.1 if sims > 1
+      # sleep 0.1 if sims > 1
 
       results
     end

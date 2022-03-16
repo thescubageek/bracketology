@@ -24,23 +24,23 @@ class Round
   #
   # @return [Array<Hash>] round winners
   def play
-    puts "\n\n***\n\nSimulating #{name}...\n"
+    # puts "\n\n***\n\nSimulating #{name}...\n"
     @winners = @games.map { |game| game.play }
 
-    puts "\n\n*** #{name} winners:"
+    # puts "\n\n*** #{name} winners:"
     @winners = @games.map do |game|
       winner = game.play
 
       @points += game.points
       @probability += game.probability
 
-      puts "#{winner} wins for #{game.points} points (#{game.format_probability})"
+      # puts "#{winner} wins for #{game.points} points (#{game.format_probability})"
       winner
     end
 
     @probability = @games.count > 0 ? @probability / @games.count : 0.0
 
-    puts "\nMax points: #{@points} (#{(100.0 * @probability).round(4)}%)"
+    # puts "\nMax points: #{@points} (#{(100.0 * @probability).round(4)}%)"
 
     @winners
   end
