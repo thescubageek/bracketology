@@ -1,14 +1,18 @@
 # NCAA Basketball Tournament game simulator
 class Game
-  attr_reader :home_team, :away_team, :winner
+  attr_reader :home_team, :away_team, :winner, :rule_points, :rule_operator
 
   # Creates a new game
   #
   # @param home_team [Team] home team in the matchup
   # @param away_team [Team] away team in the matchup
-  def initialize(home_team, away_team)
+  # @param rule_points [Integer] number of points awarded to winner
+  # @param rule_operator [String] '+' or '*'
+  def initialize(home_team, away_team, rule_points, rule_operator)
     @home_team = home_team
     @away_team = away_team
+    @rule_points = rule_points
+    @rule_operator = rule_operator
     @winner = nil
   end
 
@@ -29,9 +33,14 @@ class Game
 
   # Simulates playing the game and assigns the winner
   #
-  # @return [Team] game winner
+  # @return [Hash] hash containing winning Team, probabilty of winner (float 0.0 < n < 1.0),
+  #   and points award to the winner based on round
   def play
     @winner = simulate
+    probability = @winner == @home_team ? home_team_odds : 1 - home_team_odds
+    points = @winner.rank.send(@rule_operator, @rule_points)
+
+    { winner: @winner, probability: probability, points: points }
   end
 
   # Calculates the home team odds which are the inverse of the away team's rank ratio

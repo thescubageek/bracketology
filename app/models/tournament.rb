@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 # NCAA Basketball Tournament simulator
 class Tournament
   IMPORT_TOURNAMENT_PATH = Rails.root.join('brackets', 'import').freeze
-  DEFAULT_IMPORT_FILE = -'ncaa_2021.json'
+  DEFAULT_IMPORT_FILE = 'ncaa_2022.json'
   EXPORT_TOURNAMENT_PATH = Rails.root.join('brackets', 'export').freeze
   RESULTS_TOURNAMENT_PATH = Rails.root.join('brackets', 'results').freeze
 
@@ -15,12 +17,12 @@ class Tournament
   ].freeze
 
   RULE_BONUSES = [nil, '+', '-'].freeze
-  RULES = [
+  RULES = {
     points: [1, 2, 4, 8, 16, 32],
-    scale: '+'
-  ].freeze
+    operator: '+'
+  }.freeze
 
-  attr_reader :year, :rounds, :first_four, :teams, :winner
+  attr_reader :year, :rounds, :first_four, :teams, :winner,
               :max_total_points, :probability
 
   class << self
@@ -30,7 +32,8 @@ class Tournament
     # @return [Hash<Array>] hash for first four and round of 64 teams
     def import(tourney_file)
       json = JSON.parse(File.read(tourney_file))
-      first_four = import_teams(json['first_four'])
+      # first_four = import_teams(json['first_four'])
+      first_four = [] # disable first four for this year
       teams = import_teams(json['teams'])
       new(teams, first_four)
     end
@@ -96,6 +99,8 @@ class Tournament
     @first_four_winners = []
     @rounds = []
     @winner = nil
+    @probabilities = []
+    @points = 0
   end
 
   # Plays a simulation of the tournament
@@ -108,7 +113,7 @@ class Tournament
 
     sims.times do |_|
       reset
-      simulate_first_four
+      simulate_first_four if first_four.present?
 
       @rounds.push(build_round(@teams))
       simulate while @winner.blank?
@@ -120,7 +125,7 @@ class Tournament
       @max_total_points = calc_max_total_points
       @probability = calc_probability
 
-      winner
+      { winner: @winner, points: @max_total_points, probability: @probability }
     end
   end
 
@@ -164,7 +169,8 @@ class Tournament
   # @return [Round] tournament round
   def build_round(round_teams, round_name = nil)
     i = 0
-    round_name ||= ROUND_NAMES[@rounds.count]
+    round_num = @rounds.count
+    round_name ||= ROUND_NAMES[round_num]
     round = Round.new([], round_name)
 
     while i + 1 < round_teams.count
@@ -174,21 +180,26 @@ class Tournament
     round
   end
 
+  # Calculate the max total points for a simluated tournament
   def calc_max_total_points
-    total = 0
-    
-    @rounds.each_with_index do |round, idx|
-      round_points = @round_points[idx]
-      
-      round_bonus = 0 unless @round_operator.nil?
-
-      total += round_points + (round.winner.rank.__send__(round_operator, round.winner.rank))
+    @rounds.reduce(0) do |points, round|
+      round.games.each do |game|
+        points += game.winner[:points]
+      end
     end
-    total
   end
   
+  # Calculate the average probability of the bracket
   def calc_probability
-    0.0
+    game_count = 0
+    @rounds.reduce(0.0) do |prob, round|
+      game_count += round.games.count
+      round.games.each do |game|
+        prob += game.winner[:probability]
+      end
+    end
+
+    game_count > 0 ? prob / game_count : 0.0
   end
 
   # Exports the winners to a JSON file
