@@ -1,7 +1,8 @@
 # Round of the NCAA Basketball Tournament
 class Round
   attr_accessor :games
-  attr_reader :winners, :name
+  attr_reader :winners, :round_num, :name,
+              :rule_points, :rule_operator, :points, :probability
 
   # Creates a new round
   #
@@ -14,6 +15,8 @@ class Round
     @round_num = round_num
     @rule_points = rule_points
     @rule_operator = rule_operator
+    @points = 0
+    @probability = 0.0
     @winners = []
   end
 
@@ -22,14 +25,23 @@ class Round
   # @return [Array<Hash>] round winners
   def play
     puts "\n\n***\n\nSimulating #{name}...\n"
-    @winners = @games.map do |game|
-      game.play
-    end
+    @winners = @games.map { |game| game.play }
 
     puts "\n\n*** #{name} winners:"
-    @winners.each do |winner|
-      "#{winner[:winner]} wins for #{winner[:points]} points (#{(100*probability).round(4)}%)"
+    @winners = @games.map do |game|
+      winner = game.play
+
+      @points += game.points
+      @probability += game.probability
+
+      puts "#{winner} wins for #{game.points} points (#{game.format_probability})"
+      winner
     end
+
+    @probability = @games.count > 0 ? @probability / @games.count : 0.0
+
+    puts "\nMax points: #{@points} (#{(100.0 * @probability).round(4)}%)"
+
     @winners
   end
 end

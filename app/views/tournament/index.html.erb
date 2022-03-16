@@ -49,4 +49,10 @@
   <div class="champion">
     <%= render_bracket(1, @tournament.winner) %>
   </div>
+
+  <div class="stats">
+    <div>Key: <%= @tournament.key %></div>
+    <div>Maximum Points: <%= @tournament.max_total_points %></div>
+    <div>Avg Probability: <%= (@tournament.probability*100).round(4) %>%</div>
+  </div>
 </div>

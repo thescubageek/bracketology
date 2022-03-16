@@ -1,6 +1,7 @@
 # NCAA Basketball Tournament game simulator
 class Game
-  attr_reader :home_team, :away_team, :winner, :rule_points, :rule_operator
+  attr_reader :home_team, :away_team, :winner,
+              :rule_points, :rule_operator, :points, :probability
 
   # Creates a new game
   #
@@ -14,6 +15,8 @@ class Game
     @rule_points = rule_points
     @rule_operator = rule_operator
     @winner = nil
+    @points = 0
+    @probability = 0.0
   end
 
   # Simulates a game based on the rankings of the two teams in the matchup
@@ -37,10 +40,10 @@ class Game
   #   and points award to the winner based on round
   def play
     @winner = simulate
-    probability = @winner == @home_team ? home_team_odds : 1 - home_team_odds
-    points = @winner.rank.send(@rule_operator, @rule_points)
+    @probability = @winner == @home_team ? home_team_odds : 1 - home_team_odds
+    @points = @winner.rank.send(@rule_operator, @rule_points)
 
-    { winner: @winner, probability: probability, points: points }
+    @winner
   end
 
   # Calculates the home team odds which are the inverse of the away team's rank ratio
@@ -48,5 +51,9 @@ class Game
   # @return [Float] odds of home team winning in range of 0.0 <= n <= 1.0
   def home_team_odds
     away_team.rank.to_f / (home_team.rank.to_f + away_team.rank.to_f)
+  end
+
+  def format_probability
+    "#{(100.0 * probability).round(4)}%"
   end
 end
