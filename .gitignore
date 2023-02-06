@@ -34,3 +34,5 @@
 /.DS_Store
 */.DS_Store
 /brackets/results/.DS_Store
+
+/brackets/export/*

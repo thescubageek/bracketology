@@ -1,25 +1,6 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    actioncable (6.1.7.1)
-      actionpack (= 6.1.7.1)
-      activesupport (= 6.1.7.1)
-      nio4r (~> 2.0)
-      websocket-driver (>= 0.6.1)
-    actionmailbox (6.1.7.1)
-      actionpack (= 6.1.7.1)
-      activejob (= 6.1.7.1)
-      activerecord (= 6.1.7.1)
-      activestorage (= 6.1.7.1)
-      activesupport (= 6.1.7.1)
-      mail (>= 2.7.1)
-    actionmailer (6.1.7.1)
-      actionpack (= 6.1.7.1)
-      actionview (= 6.1.7.1)
-      activejob (= 6.1.7.1)
-      activesupport (= 6.1.7.1)
-      mail (~> 2.5, >= 2.5.4)
-      rails-dom-testing (~> 2.0)
     actionpack (6.1.7.1)
       actionview (= 6.1.7.1)
       activesupport (= 6.1.7.1)
@@ -27,33 +8,17 @@ GEM
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.2.0)
-    actiontext (6.1.7.1)
-      actionpack (= 6.1.7.1)
-      activerecord (= 6.1.7.1)
-      activestorage (= 6.1.7.1)
-      activesupport (= 6.1.7.1)
-      nokogiri (>= 1.8.5)
     actionview (6.1.7.1)
       activesupport (= 6.1.7.1)
       builder (~> 3.1)
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
-    activejob (6.1.7.1)
-      activesupport (= 6.1.7.1)
-      globalid (>= 0.3.6)
     activemodel (6.1.7.1)
       activesupport (= 6.1.7.1)
     activerecord (6.1.7.1)
       activemodel (= 6.1.7.1)
       activesupport (= 6.1.7.1)
-    activestorage (6.1.7.1)
-      actionpack (= 6.1.7.1)
-      activejob (= 6.1.7.1)
-      activerecord (= 6.1.7.1)
-      activesupport (= 6.1.7.1)
-      marcel (~> 1.0)
-      mini_mime (>= 1.1.0)
     activesupport (6.1.7.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
@@ -86,15 +51,12 @@ GEM
     coffee-script-source (1.12.2)
     concurrent-ruby (1.2.0)
     crass (1.0.6)
-    date (3.3.3)
     debug_inspector (1.1.0)
     erubi (1.12.0)
     execjs (2.8.1)
     fakeredis (0.8.0)
       redis (~> 4.1)
     ffi (1.15.5)
-    globalid (1.1.0)
-      activesupport (>= 5.0)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     interception (0.5)
@@ -105,14 +67,7 @@ GEM
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
-    mail (2.8.1)
-      mini_mime (>= 0.1.1)
-      net-imap
-      net-pop
-      net-smtp
-    marcel (1.0.2)
     method_source (1.0.0)
-    mini_mime (1.1.2)
     mini_portile2 (2.8.1)
     minitest (5.17.0)
     minitest-ci (3.4.0)
@@ -123,15 +78,6 @@ GEM
       minitest (>= 5.0)
       ruby-progressbar
     msgpack (1.6.0)
-    net-imap (0.3.4)
-      date
-      net-protocol
-    net-pop (0.1.2)
-      net-protocol
-    net-protocol (0.2.1)
-      timeout
-    net-smtp (0.3.3)
-      net-protocol
     nio4r (2.5.8)
     nokogiri (1.14.1)
       mini_portile2 (~> 2.8.0)
@@ -157,21 +103,6 @@ GEM
     rack (2.2.6.2)
     rack-test (2.0.2)
       rack (>= 1.3)
-    rails (6.1.7.1)
-      actioncable (= 6.1.7.1)
-      actionmailbox (= 6.1.7.1)
-      actionmailer (= 6.1.7.1)
-      actionpack (= 6.1.7.1)
-      actiontext (= 6.1.7.1)
-      actionview (= 6.1.7.1)
-      activejob (= 6.1.7.1)
-      activemodel (= 6.1.7.1)
-      activerecord (= 6.1.7.1)
-      activestorage (= 6.1.7.1)
-      activesupport (= 6.1.7.1)
-      bundler (>= 1.15.0)
-      railties (= 6.1.7.1)
-      sprockets-rails (>= 2.0.0)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
@@ -230,7 +161,6 @@ GEM
       mini_portile2 (~> 2.8.0)
     thor (1.2.1)
     tilt (2.0.11)
-    timeout (0.3.1)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -246,15 +176,17 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    websocket-driver (0.7.5)
-      websocket-extensions (>= 0.1.0)
-    websocket-extensions (0.1.5)
     zeitwerk (2.6.6)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionpack (= 6.1.7.1)
+  actionview (= 6.1.7.1)
+  activemodel (= 6.1.7.1)
+  activerecord (= 6.1.7.1)
+  activesupport (= 6.1.7.1)
   bootsnap (>= 1.1.0)
   brakeman
   bullet
@@ -268,10 +200,11 @@ DEPENDENCIES
   pry-rescue
   pry-stack_explorer
   puma (>= 4.3.12)
-  rails (= 6.1.7.1)
+  railties (= 6.1.7.1)
   rubocop
   rubocop-rails
   sass-rails (~> 5.0)
+  sprockets-rails
   sqlite3
   turbolinks (~> 5)
   tzinfo-data

@@ -1,6 +1,7 @@
 # NCAA Basketball Tournament game simulator
 class Game
-  attr_reader :home_team, :away_team, :winner
+  attr_accessor :winner
+  attr_reader :home_team, :away_team
 
   # Creates a new game
   #

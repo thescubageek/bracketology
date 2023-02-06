@@ -1,9 +1,15 @@
 # NCAA Basketball Tournament simulator
 class Tournament
+  class InvalidCode < StandardError; end
+
   IMPORT_TOURNAMENT_PATH = Rails.root.join('brackets', 'import').freeze
   DEFAULT_IMPORT_FILE = -'ncaa_2021.json'
   EXPORT_TOURNAMENT_PATH = Rails.root.join('brackets', 'export').freeze
   RESULTS_TOURNAMENT_PATH = Rails.root.join('brackets', 'results').freeze
+
+  CODE_LENGTH = 13
+  TOTAL_GAMES = 63
+  TOTAL_GAMES_WITH_FIRST_FOUR = 67
 
   ROUND_NAMES = [
     'First Round',
@@ -14,7 +20,7 @@ class Tournament
     'Championship'
   ].freeze
 
-  attr_reader :year, :rounds, :first_four, :teams, :winner
+  attr_reader :year, :rounds, :first_four, :teams, :winner, :code
 
   class << self
     # Imports the tournament teams from a JSON file
@@ -38,6 +44,12 @@ class Tournament
       end
     end
 
+    # Calculates the final results by randomly aggregating the results of
+    #   previously saved simulations. The larger the value of `num` the more
+    #   likely the results will contain fewer upsets
+    #
+    # @param num [Integer, nil] number of simulations to run
+    # @param path [String] path for export file
     def calculate_final_results(num = nil, path = EXPORT_TOURNAMENT_PATH)
       files = Dir.glob("#{path}/*")
       num ||= files.count
@@ -52,7 +64,11 @@ class Tournament
             results[round_name][idx] ||= {}
             team = Team.new(winner['name'], winner['rank'])
             key = team.to_s
-            results[round_name][idx][key] ||= { 'name' => team.name, 'rank' => team.rank, 'count' => 0 }
+            results[round_name][idx][key] ||= {
+              'name'  => team.name,
+              'rank'  => team.rank,
+              'count' => 0
+            }
             results[round_name][idx][key]['count'] += 1
           end
         end
@@ -87,6 +103,7 @@ class Tournament
     @first_four_winners = []
     @rounds = []
     @winner = nil
+    @code = nil
   end
 
   # Plays a simulation of the tournament
@@ -103,8 +120,10 @@ class Tournament
 
       @rounds.push(build_round(@teams))
       simulate while @winner.blank?
+      @code = to_tourney_code
 
       puts "#{year} tournament winner: #{@winner}"
+      puts "Code: #{@code}"
       export if should_export
       sleep 0.1 if sims > 1
 
@@ -145,6 +164,11 @@ class Tournament
     end
   end
 
+  # @return [Integer] total number of games based on whether or not to include First Four
+  def total_games
+    @total_games ||= @first_four ? TOTAL_GAMES_WITH_FIRST_FOUR : TOTAL_GAMES
+  end
+
   # Builds a round of game matchups for the teams
   #
   # @param round_teams [Array<Team>] teams playing in the round
@@ -171,8 +195,79 @@ class Tournament
       export_json["#{round.name} Winners"] = round.winners
     end
 
-    export_file = "#{EXPORT_TOURNAMENT_PATH}/#{DateTime.now.strftime('%Q')}.json"
+    export_file = "#{EXPORT_TOURNAMENT_PATH}/#{@code}.json"
     File.write(export_file, export_json.to_json)
     export_json
+  end
+
+  # Converts the Tournament results into a code that can be used to look it up later
+  #
+  # @return [String] tournament code
+  def to_tourney_code
+    tourney_code = to_binary_code.to_i(2).to_s(36)
+    tourney_code.insert(1, '-') while tourney_code.length < CODE_LENGTH
+    tourney_code
+  end
+
+  # Transforms the results to a binary code string, where '0' represents a home team
+  #   victory and '1' represents an away team victory
+  def to_binary_code
+    @rounds.reduce('') do |str, round|
+      round.games.each do |game|
+        str << (game.winner == game.home_team ? '0' : '1')
+      end
+      str
+    end
+  end
+
+  # Converts tournament code to binary code
+  #
+  # @param tourney_code [String] tournament code
+  # @return [String] binary code
+  def convert_tourney_code_to_binary_code(tourney_code)
+    binary_code = tourney_code.gsub('-', '').to_i(36).to_s(2)
+    binary_code.prepend('0') while binary_code.size < total_games
+    binary_code
+  end
+
+  # Loads a Tournament bracket from a tournament cody
+  #
+  # @param tourney_code [String] tournament code
+  # @return [Tournament] completed tournament brackets
+  def load_from_tourney_code(tourney_code)
+    raise InvalidCode unless tourney_code.length == CODE_LENGTH
+
+    reset
+
+    @code = tourney_code
+    binary_code = convert_tourney_code_to_binary_code(tourney_code)
+    load_from_binary_code(binary_code)
+  end
+
+  # Parses a binary code string and loads it into a completed tournament
+  #
+  # @param binary_code [String] binary code representing Tournament results
+  # @return [Tournament] completed tournament brackets
+  def load_from_binary_code(binary_code)
+    @rounds.push(build_round(@teams))
+
+    while @winner.blank?
+      round = @rounds.last
+      round.winners = []
+
+      round.games.each do |game|
+        bit = binary_code.slice!(0)
+        winner = bit == '0' ? game.home_team : game.away_team
+        game.winner = winner
+        round.winners << winner
+      end
+
+      if round.winners.count > 1
+        next_round = build_round(round.winners)
+        @rounds.push(next_round)
+      else
+        @winner = round.winners.first
+      end
+    end
   end
 end

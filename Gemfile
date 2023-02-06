@@ -3,7 +3,13 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.7'
 
-gem 'rails', '6.1.7.1'
+gem 'actionpack', '6.1.7.1'
+gem 'actionview', '6.1.7.1'
+gem 'activemodel', '6.1.7.1'
+gem 'activerecord', '6.1.7.1'
+gem 'activesupport', '6.1.7.1'
+gem 'railties', '6.1.7.1'
+gem 'sprockets-rails'
 
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
