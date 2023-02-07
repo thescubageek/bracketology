@@ -6,10 +6,37 @@
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
 
+  .title {
+    position: absolute;
+    width: 1200px;
+    height: 66px;
+    top: 10px;
+    left: 220px;
+    background-color: #000014;
+    color: white;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    line-height: 66px;
+    font-size: 48px;
+    text-align: center;
+  }
+
   .team {
     position: relative;
     height: 18px;
     white-space: nowrap;
+  }
+
+  .code {
+    position: absolute;
+    user-select: all;
+    font-weight: 700;
+    font-size: 20px;
+    width: 180px;
+    top: 740px;
+    left: 717px;
+    text-align: center;
+    font-weight: bold;
+    word-wrap: nowrap;
   }
 
   .bracket_1, .bracket_2 {

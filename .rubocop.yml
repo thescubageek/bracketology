@@ -1,0 +1,571 @@
+require: rubocop-rails
+
+### METRICS
+
+# @see http://c2.com/cgi/wiki?AbcMetric
+Metrics/AbcSize:
+  Max: 30
+
+# The guiding principle of classes is SRP, SRP can't be accurately measured by LoC
+Metrics/ClassLength:
+  Max: 250
+
+# Prevent the length of a block of code from exceeding the max value
+Metrics/BlockLength:
+  Max: 200
+
+# Caps off the cyclomatic complexity of methods
+# @note The cyclomatic complexity is the number of linearly independent paths through a method
+Metrics/CyclomaticComplexity:
+  Max: 9
+
+# Too short methods lead to extraction of single-use methods, which can make
+# the code easier to read (by naming things), but can also clutter the class
+Metrics/MethodLength:
+  Max: 30
+  Exclude:
+    - test/**/*
+    - spec/**/*
+
+# Caps off the perceived complexity of methods
+# @note The perceived complexity score measures the complexity experienced when looking at a method
+Metrics/PerceivedComplexity:
+  Max: 8
+
+### LAYOUT
+
+# Enforces bare access modifier (private, protected) are aligned with methods
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_first_argument
+  Enabled: true
+
+# Checks the . position in multi-line method calls
+# @note The rest of the company uses a different style but most of Triage is written using
+#   the leading format
+Layout/DotPosition:
+  Enabled: true
+  EnforcedStyle: leading
+  # Enabled: false
+  # StyleGuide: https://relaxed.ruby.style/#layoutdotposition
+
+# Enforces no empty lines below the start and above the end of a class
+# @note The rest of the company has this disabled
+Layout/EmptyLinesAroundClassBody:
+  Enabled: true
+  EnforcedStyle: no_empty_lines
+
+# Checks for a newline after an attribute accessor or a group of them
+# @note The rest of the company has this disabled
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
+# First line of multiline hash should be indented relative to the opening of the hash
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+# Force hash-rocket format multiline hashes to be indented to the same tab
+Layout/HashAlignment:
+  EnforcedHashRocketStyle: table
+
+# Max length of a line of code
+# @note The rest of the company uses 260 but that seems pointlessly lenient
+Layout/LineLength:
+  Max: 100
+  Exclude:
+    - test/**/*
+    - spec/**/*
+
+# Enforces the indentation of multiline methods to be relative
+# @example
+#   enrollment = Enrollment.find(id)
+#                  .where(status: 'completed')
+#                  .active
+# @note The rest of the company has this disabled
+Layout/MultilineMethodCallIndentation:
+  Enabled: true
+  EnforcedStyle: indented_relative_to_receiver
+
+# Checks that method call operators do not have surrounding spaces
+# @note The rest of the company has this disabled for whatever reason
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+### NAMING
+
+# Disabled because this has been implemented inconsistently across classes
+Naming/AccessorMethodName:
+  Enabled: false
+
+# Prevent <<-END from being used in HEREDOC
+# @note The rest of the company has this disabled
+Naming/HeredocDelimiterNaming:
+  Enabled: true
+
+# Evaluates consistency in boolean method naming; not used due to inconsistencies across codebase
+Naming/PredicateName:
+  Enabled: false
+
+# Numbered variables should be formatted as var_1, var_2, var_3 etc
+# @note The rest of the company has this disabled
+Naming/VariableNumber:
+  Enabled: true
+  EnforcedStyle: snake_case
+
+### STYLE
+
+# group all private methods (etc) under a single private keyword
+Style/AccessorGrouping:
+  Enabled: true
+  EnforcedStyle: grouped
+
+# attr_accessors (etc) should be grouped on a single line
+Style/AccessModifierDeclarations:
+  Enabled: true
+  EnforcedStyle: group
+
+# use alias_method instead of alias
+Style/Alias:
+  Enabled: true
+  EnforcedStyle: prefer_alias_method
+
+# only permit && and || operators
+# @note The rest of the company has this disabled
+Style/AndOr:
+  Enabled: true
+
+# require casting to Array() rather than asserting array presence
+Style/ArrayCoercion:
+  Enabled: false
+
+# use join for joining string arrays
+Style/ArrayJoin:
+  Enabled: true
+
+# Identify non-ASCII characters; DISABLED for more relaxed style
+Style/AsciiComments:
+  Enabled: false
+# StyleGuide: https://relaxed.ruby.style/#styleasciicomments
+
+# alert if attr is used instead of attr_reader etc
+Style/Attr:
+  Enabled: true
+
+# check that blocks do automatic resource cleanup
+Style/AutoResourceCleanup:
+  Enabled: true
+
+# use %{} instead of %q{}
+Style/BarePercentLiterals:
+  Enabled: true
+  EnforcedStyle: bare_percent
+
+# prevent redundant attr_reader/attr_writer
+Style/BisectedAttrAccessor:
+  Enabled: true
+
+# Checks for begin blocks
+Style/BeginBlock:
+  Enabled: true
+
+# prevent block comments using begin/end
+Style/BlockComments:
+  Enabled: true
+
+# use braces for one-liners loops, do/end for multiliner loops
+# @note The rest of the company uses braces_for_chaining but this is the opposite of
+#   what Triage has been using
+Style/BlockDelimiters:
+  Enabled: true
+  EnforcedStyle: line_count_based
+
+# flags the uses of the case equality operator(===)
+Style/CaseEquality:
+  Enabled: true
+
+# identifies where a when/case statement can be used instead of if/else
+Style/CaseLikeIf:
+  Enabled: true
+
+# flags use of character literal ?x
+Style/CharacterLiteral:
+  Enabled: true
+
+# enforce module::class on same or different lines; DISABLED we don't care
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+# use is_a? instead of kind_of?
+Style/ClassCheck:
+  Enabled: true
+
+# use `def self.method` instead `def Class.method`
+Style/ClassMethods:
+  Enabled: true
+
+# Use `def self.method` instead of `class << self`; DISABLED we don't care
+Style/ClassMethodsDefinitions:
+  Enabled: false
+
+# flags use of `@@` class-level variables
+Style/ClassVars:
+  Enabled: true
+
+# uses preferred method names, ie map vs collect, find vs detect, etc
+Style/CollectionMethods:
+  Enabled: true
+
+# flags use of :: instead of . to call a class method
+Style/ColonMethodCall:
+  Enabled: true
+
+# flags use of :: in class method definitions, ie `def self::bar`
+Style/ColonMethodDefinition:
+  Enabled: true
+
+# use backticks for single-line command literals, %x() for multiple command literals
+Style/CommandLiteral:
+  Enabled: true
+  EnforcedStyle: mixed
+
+# Enforces uppercase of TODO, FIXME, and OPTIMIZE in comments; DISABLED because using Yardoc instad
+Style/CommentAnnotation:
+  Enabled: false
+
+# Prevents comments on same line as keyword; DISABLED we don't care
+Style/CommentedKeyword:
+  Enabled: false
+
+# Enforces indentation style on conditional assignments; DISABLED we don't care
+Style/ConditionalAssignment:
+  Enabled: false
+
+# DISABLED: we are using Yardoc instead
+Style/Documentation:
+  Enabled: false
+
+# Flags empty methods; DISABLED empty methods are permitted
+Style/EmptyMethod:
+  Enabled: false
+
+# Requires explicit &block in parameters for yields
+Style/ExplicitBlockArgument:
+  Enabled: true
+
+# Enforces exponential notation style; DISABLED not needed
+Style/ExponentialNotation:
+  Enabled: false
+
+# Disables enforcement of string interpolation format
+Style/FormatString:
+  Enabled: false
+  # StyleGuide: https://relaxed.ruby.style/#styleformatstring
+
+# Format string tokens using %{}
+Style/FormatStringToken:
+  Enabled: true
+  EnforcedStyle: template
+# format('%{greeting}', greeting: 'Hello')
+
+# This is old Rails 4 legacy stuff to support frozen strings in Rails 5; not needed
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# Enforces $stdout over STDOUT; DISABLED we don't care
+Style/GlobalStdStream:
+  Enabled: false
+
+# Guard clauses cause early evaluation and return of a method if a condition is met.
+# @note The rest of the company has this disabled, but we have it enabled for leaner code
+Style/GuardClause:
+  Enabled: true
+
+# Enforces braces around hash literal as a last array item
+Style/HashAsLastArrayItem:
+  Enabled: true
+
+# Prefer {}.each_key over {}.keys.each, {}.each_value over {}.values.each
+# @note We have been using the opposite paradigm in a lot of places but this is what the rest of
+#   the company is doing and we should do the same
+Style/HashEachMethods:
+  Enabled: true
+
+# Flags places where `case-when` represents a simple 1:1 mapping and can be replaced with a hash lookup
+Style/HashLikeCase:
+  Enabled: true
+
+# Flags hashes where .transform_keys can be used instead of .each or .map
+Style/HashTransformKeys:
+  Enabled: true
+
+# Flags hashes where .transform_values can be used instead of .each or .map
+Style/HashTransformValues:
+  Enabled: true
+
+# Try to optimize if/unless statements into single-liners
+# @note The rest of the company has this disabled
+Style/IfUnlessModifier:
+  Enabled: true
+
+# Stipulates use of lambda do vs -> (){ }; DISABLED not important
+Style/Lambda:
+  Enabled: false
+  # StyleGuide: https://relaxed.ruby.style/#stylelambda
+
+# Flags use of `not()` instead of `!`
+# @note The rest of the company has this disabled
+Style/Not:
+  Enabled: true
+
+# Prefer == 0 over .zero?, > 0 over .positive?, and < 0 over .negative?
+# @note The rest of the company has this disabled
+Style/NumericPredicate:
+  Enabled: true
+  EnforcedStyle: comparison
+
+# Enforce %i vs %I etc; DISABLED not important
+Style/PercentLiteralDelimiters:
+  Enabled: false
+  # StyleGuide: https://relaxed.ruby.style/#stylepercentliteraldelimiters
+
+# Use key? on hashes instead of has_key?
+Style/PreferredHashMethods:
+  Enabled: true
+  EnforcedStyle: short
+
+# Flags numeric literals that need `_` dividers
+# @note The rest of the company has this disabled
+Style/NumericLiterals:
+  Enabled: true
+
+# Prefers keyword arguments over `options = {}` hash in params; DISABLED not important
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+# Checks that raised arguments are passed as `StandardError, "message"` instead of
+#   `StandardError.new("message")`
+Style/RaiseArgs:
+  Enabled: true
+
+# Flags redundant assignment before returning
+Style/RedundantAssignment:
+  Enabled: true
+
+# Flag unnecessary use of RuntimeError
+# @note The rest of the company has this disabled
+Style/RedundantException:
+  Enabled: true
+
+# Flags where `fetch(key) { value }` can be replaced by `fetch(key, value)`
+Style/RedundantFetchBlock:
+  Enabled: true
+
+# Flags superfluous `.rb` extension in the filename provided to `require` and `require_relative`
+Style/RedundantFileExtensionInRequire:
+  Enabled: true
+
+# Flags redundant single character regex; DISABLED not important
+Style/RedundantRegexpCharacterClass:
+  Enabled: false
+
+# Flags unnecessary escape characters in regex; DISABLED not important
+Style/RedundantRegexpEscape:
+  Enabled: false
+
+# Flags unnecessary uses of return
+# @note The rest of the company has this disabled
+Style/RedundantReturn:
+  Enabled: true
+
+# Flags places where safe operator can be used; DISABLED because we want explicitness and the
+#   &. operator can hide errors
+Style/SafeNavigation:
+  Enabled: false
+
+# Flags ranges used for slicing; DISABLED not important
+Style/SlicingWithRange:
+  Enabled: false
+
+# Flags use of `dig` using only a single argument
+Style/SingleArgumentDig:
+  Enabled: true
+
+# Prefer interpolated strings over concatenation
+Style/StringConcatenation:
+  Enabled: true
+
+# We're not using safe navigation, I wonder if there's an opposite rule - enforce not using it.
+Style/StringLiterals:
+  Enabled: false
+
+# Enforces use of %i[] for symbol arrays
+# @note The rest of the company has this disabled
+Style/SymbolArray:
+  Enabled: true
+
+# Enforces use of %w[] for word arrays
+# @note The rest of the company has this disabled
+Style/WordArray:
+  Enabled: true
+
+### LINT
+
+# There are valid cases, for example debugging Cucumber steps,
+# also they'll fail CI anyway
+Lint/Debugger:
+  Enabled: false
+
+# Flags variable assignment in if/when statements
+# @note The rest of the company has this disabled but it seems to me like we want this flagged
+Lint/AssignmentInCondition:
+  Enabled: true
+  # Enabled: false
+  # StyleGuide: https://relaxed.ruby.style/#lintassignmentincondition
+
+# Flags tautologies, ie `if x >= x`
+Lint/BinaryOperatorWithIdenticalOperands:
+  Enabled: true
+
+# Flags use of old SSL methods; DISABLED still have dependency on the old code
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: false
+
+# Flags duplication conditions in if/elsif statements
+Lint/DuplicateElsifCondition:
+  Enabled: true
+
+# Flags duplication rescue conditions
+Lint/DuplicateRescueException:
+  Enabled: true
+
+# Flags if, elsif and unless branches without a body
+Lint/EmptyConditionalBody:
+  Enabled: true
+
+# Flags comprisons between floats and non-floats; DISABLED not important
+Lint/FloatComparison:
+  Enabled: false
+
+# Flags inherited methods missing `super`; DISABLED because sometimes the entire method is overwritten
+Lint/MissingSuper:
+  Enabled: false
+
+# Prevents mixed types of regex expressions; DISABLED not important
+Lint/MixedRegexpCaptureTypes:
+  Enabled: false
+
+# Flags regex that will always return nil
+Lint/OutOfRangeRegexpRef:
+  Enabled: true
+
+# Use StandardError not Exception for raising exceptions
+Lint/RaiseException:
+  Enabled: true
+
+# DISABLED we aren't using cop comment disable feature
+Lint/RedundantCopDisableDirective:
+  Enabled: false
+
+# Flags when a variable is being assigned to itself
+Lint/SelfAssignment:
+  Enabled: true
+
+# Prevents overrides of struct's built-in methods
+Lint/StructNewOverride:
+  Enabled: true
+
+# Checks for top level return with arguments; DISABLED not needed
+Lint/TopLevelReturnWithArgument:
+  Enabled: false
+
+# Flags unused arguments in blocks
+# @note The rest of the company has this disabled
+Lint/UnusedBlockArgument:
+  Enabled: false
+
+# Flag unused arguments in methods
+# @note The rest of the company has this disabled
+Lint/UnusedMethodArgument:
+  Enabled: true
+
+# Flags loops that will have at most one iteration
+Lint/UnreachableLoop:
+  Enabled: true
+
+# Flags where CGI vs URI can be used; DISABLED not important
+Lint/UriEscapeUnescape:
+  Enabled: false
+
+### Rails
+
+# Checks that Active Record callbacks are declared in the order in which they will be executed
+Rails/ActiveRecordCallbacksOrder:
+  Enabled: true
+
+# Flags usages of file path joining process to use `Rails.root.join` clause
+Rails/FilePath:
+  Enabled: true
+  EnforcedStyle: arguments
+
+# Prefers use of `find_by` over `where.first`
+Rails/FindById:
+  Enabled: true
+
+# Flags use of has_and_belongs_to_many; DISABLED not important
+Rails/HasAndBelongsToMany:
+  Enabled: false
+
+# Checks that ActiveSupport’s inquiry method is not used
+Rails/Inquiry:
+  Enabled: true
+
+# Enforces use of `_mailer.rb` on Mailer class files
+Rails/MailerName:
+  Enabled: true
+
+# Flags where defining routes with match can be replaced with a specific HTTP method
+Rails/MatchRoute:
+  Enabled: true
+
+# Prefers `collection.exclude?(obj)` over `!collection.include?(obj)`
+Rails/NegateInclude:
+  Enabled: true
+
+# Prefers `pluck` over `map` for ActiveRecord when extracting key
+Rails/Pluck:
+  Enabled: true
+
+# Flags where `select` can be used instead of `pluck` in ActiveRecord query
+Rails/PluckInWhere:
+  Enabled: true
+
+# Flags inline rendering
+Rails/RenderInline:
+  Enabled: true
+
+# DISABLED plain text renders not used
+Rails/RenderPlainText:
+  Enabled: false
+
+# Enforces short convention for i18n methods; DISABLED until we implement i18n
+Rails/ShortI18n:
+  Enabled: false
+
+# Prefer `exists?` over `where.exists?` in ActiveRecord
+Rails/WhereExists:
+  Enabled: true
+
+# Prefer `refute` over `assert_not`.
+Rails/RefuteMethods:
+  Enabled: true
+  EnforcedStyle: refute
+
+### Excluded Files
+
+AllCops:
+  Exclude:
+    - Gemfile
+    - Gemfile.lock
+    - bin/**/*
+    - db/migrate/*
+    - db/schema.rb
+    - vendor/**/*
