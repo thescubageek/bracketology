@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   root to: "tournament#index"
 
   get '/:code', to: "tournament#show"
+  get '/qr/:code', to: "tournament#qr_code"
 end

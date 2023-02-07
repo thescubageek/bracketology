@@ -1,16 +1,30 @@
 class TournamentController < ApplicationController
-  before_action :load_import_file
+  before_action :load_import_file, except: %i[qr_code]
+  before_action :identify_tourney_code!, except: %i[index]
 
   def index
     @tournament.play(params.permit(:export))
   end
 
   def show
-    tourney_code = params.require(:code)
-    @tournament.load_from_tourney_code(tourney_code)
+    @tournament.load_from_tourney_code(@tourney_code)
     render template: 'tournament/index'
   rescue Tournament::InvalidCode => _e
     render :unprocessable_entity, format: :json, data: { message: 'invalid code' }
+  end
+
+  def qr_code
+    qrcode = ::RQRCode::QRCode.new("#{request.base_url}/#{@tourney_code}")
+
+    svg = qrcode.as_svg(
+      color: '000',
+      shape_rendering: 'crispEdges',
+      module_size: 4,
+      standalone: true,
+      use_path: true
+    )
+
+    render inline: svg, format: :svg
   end
 
   private
@@ -30,5 +44,10 @@ class TournamentController < ApplicationController
     @tournament = Tournament.import(@import_file)
   rescue JSON::ParserError => _e
     render :unprocessable_entity, format: :json, data: { message: 'invalid file format' }
+  end
+
+  def identify_tourney_code!
+    @tourney_code = params.require(:code)
+    raise Tournament::InvalidCode unless @tourney_code.size == Tournament::CODE_LENGTH
   end
 end

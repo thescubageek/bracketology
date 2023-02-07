@@ -20,23 +20,60 @@
     text-align: center;
   }
 
+  .shims {
+    .shim {
+      position: absolute;
+
+      &.date_cover {
+        top: 102px;
+        left: 100px;
+        width: 1400px;
+        height: 20px;
+        background-color: white;
+      }
+
+      &.ff_date_cover {
+        top: 168px;
+        width: 80px;
+        height: 20px;
+        left: 758px;
+        background-color: #ddd;
+      }
+
+      &.championship_date_cover {
+        top: 630px;
+        width: 80px;
+        height: 20px;
+        left: 758px;
+        background-color: white;
+      }
+    }
+  }
+
   .team {
     position: relative;
     height: 18px;
     white-space: nowrap;
   }
 
-  .code {
+  .tourney_code {
     position: absolute;
-    user-select: all;
-    font-weight: 700;
-    font-size: 20px;
     width: 180px;
     top: 740px;
     left: 717px;
     text-align: center;
-    font-weight: bold;
-    word-wrap: nowrap;
+    
+    .code {
+      font-weight: bold;
+      word-wrap: nowrap;
+      user-select: all;
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .qr_code {
+      margin-top: 10px;
+    }
   }
 
   .bracket_1, .bracket_2 {

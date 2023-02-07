@@ -1,6 +1,12 @@
 <div class="brackets">
   <div class="title">2022 NCAA DIVISION I MEN'S BACKETBALL CHAMPIONSHIP</div>
 
+  <div class="shims">
+    <div class="shim date_cover"></div>
+    <div class="shim ff_date_cover"></div>
+    <div class="shim championship_date_cover"></div>
+  </div>
+
   <div class="first_four">
     <%= render_bracket(1, @tournament.first_four[0..1]) %>
     <%= render_bracket(2, @tournament.first_four[2..3]) %>
@@ -52,7 +58,8 @@
     <%= render_bracket(1, @tournament.winner) %>
   </div>
 
-  <div class="code">
-    <%= @tournament.code %>
+  <div class="tourney_code">
+    <div class="code"><%= @tournament.code %></div>
+    <div class="qr_code"><%= render_qr_code(@tournament.code) %></div>
   </div>
 </div>

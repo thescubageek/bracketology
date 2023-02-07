@@ -50,6 +50,9 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # adds .to_b for bools
 gem 'wannabe_bool'
 
+# QR code
+gem "rqrcode", "~> 2.0"
+
 group :development, :test do
   gem 'brakeman', require: false
   gem 'pry-byebug'
