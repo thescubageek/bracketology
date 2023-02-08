@@ -85,6 +85,37 @@ class Tournament
       File.write("#{RESULTS_TOURNAMENT_PATH}/#{num}_#{version}.json", final_winners.to_json)
       final_winners
     end
+
+    # Converts tournament code to binary code
+    #
+    # @param tourney_code [String] tournament code
+    # @return [String] binary code
+    def convert_tourney_code_to_binary_code(tourney_code)
+      binary_code = tourney_code.gsub('-', '').to_i(36).to_s(2)
+      binary_code.prepend('0') while binary_code.size < TOTAL_GAMES
+      binary_code
+    end
+
+    # Converts tournament code to binary code
+    #
+    # @param binary_code [String] binary code representing Tournament results
+    # @return [String] binary code
+    def convert_binary_code_to_tourney_code(binary_code)
+      tourney_code = binary_code.to_i(2).to_s(36)
+      tourney_code.insert(1, '-') while tourney_code.length < CODE_LENGTH
+      tourney_code
+    end
+
+    # Enter a phrase and generate a tournament bracket! Fun for everyone!
+    #
+    # @param phrase [String] phraises like "march madness" and "boo-yah",
+    #   whatever you want creates a unique tournament
+    def create_tourney_code_from_phrase(phrase)
+      # Create hex hash based on string
+      hash = OpenSSL::Digest::SHA256.hexdigest(phrase)
+      binary_code = hash.to_i(16).to_s(2)[0...63]
+      convert_binary_code_to_tourney_code(binary_code)
+    end
   end
 
   # Creates a new tournament simulation
@@ -204,9 +235,7 @@ class Tournament
   #
   # @return [String] tournament code
   def to_tourney_code
-    tourney_code = to_binary_code.to_i(2).to_s(36)
-    tourney_code.insert(1, '-') while tourney_code.length < CODE_LENGTH
-    tourney_code
+    self.class.convert_binary_code_to_tourney_code(to_binary_code)
   end
 
   # Transforms the results to a binary code string, where '0' represents a home team
@@ -220,16 +249,6 @@ class Tournament
     end
   end
 
-  # Converts tournament code to binary code
-  #
-  # @param tourney_code [String] tournament code
-  # @return [String] binary code
-  def convert_tourney_code_to_binary_code(tourney_code)
-    binary_code = tourney_code.gsub('-', '').to_i(36).to_s(2)
-    binary_code.prepend('0') while binary_code.size < total_games
-    binary_code
-  end
-
   # Loads a Tournament bracket from a tournament cody
   #
   # @param tourney_code [String] tournament code
@@ -240,7 +259,7 @@ class Tournament
     reset
 
     @code = tourney_code
-    binary_code = convert_tourney_code_to_binary_code(tourney_code)
+    binary_code = self.class.convert_tourney_code_to_binary_code(tourney_code)
     load_from_binary_code(binary_code)
   end
 

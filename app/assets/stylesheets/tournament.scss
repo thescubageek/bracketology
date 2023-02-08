@@ -20,23 +20,60 @@
     text-align: center;
   }
 
+  .shims {
+    .shim {
+      position: absolute;
+
+      &.date_cover {
+        top: 102px;
+        left: 100px;
+        width: 1400px;
+        height: 20px;
+        background-color: white;
+      }
+
+      &.ff_date_cover {
+        top: 168px;
+        width: 80px;
+        height: 20px;
+        left: 758px;
+        background-color: #ddd;
+      }
+
+      &.championship_date_cover {
+        top: 630px;
+        width: 80px;
+        height: 20px;
+        left: 758px;
+        background-color: white;
+      }
+    }
+  }
+
   .team {
     position: relative;
     height: 18px;
     white-space: nowrap;
   }
 
-  .code {
+  .tourney_code {
     position: absolute;
-    user-select: all;
-    font-weight: 700;
-    font-size: 20px;
     width: 180px;
     top: 740px;
     left: 717px;
     text-align: center;
-    font-weight: bold;
-    word-wrap: nowrap;
+    
+    .code {
+      font-weight: bold;
+      word-wrap: nowrap;
+      user-select: all;
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .qr_code {
+      margin-top: 10px;
+    }
   }
 
   .bracket_1, .bracket_2 {
@@ -293,6 +330,67 @@
         height: 38px;
         padding-top: 12px;
         margin: 0;
+      }
+    }
+  }
+}
+
+.phrase_overlay {
+  position: absolute;
+  background-color: rgba(0,0,0,0.8);
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 99;
+
+  form {
+    position: absolute;
+    width: 600px;
+    top: 200px;
+    left: 800px;
+    margin-left: -315px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 5px 5px 3px rgba(0,0,0,0.5);
+    text-align: center;
+
+    label {
+      display: block;
+      font-weight: 700;
+      color: #333;
+      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    textarea {
+      display: block;
+      width: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      padding: 5px;
+    }
+
+    input[type=submit] {
+      display: block;
+      width: 260px;
+      height: 40px;
+      color: #fff;
+      background-color: #009;
+      border: 1px solid #003;
+      margin-left: 170px;
+      margin-top: 10px;
+      border-radius: 4px;
+      font-size: 16px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 700;
+
+      &:hover {
+        cursor: pointer;
+        background-color: #00c;
+        border: 1px solid #009;
       }
     }
   }

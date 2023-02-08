@@ -42,10 +42,29 @@ the `brackets/results` directory. Note that the more exported files you use then
 results will tend towards highly ranked teams dominating and fewer upsets. Using a smaller set of exports
 will generate a high chance of upsets.
 
+## New Features in v1.1.0
+
+### Tourney Codes
+Every possible combination of brackets is encoded in a 13-character "tourney code." Entering a tourney
+code outputs the bracket wins/losses represented by that code. Each code is unique to exactly one
+bracket.
+
+### QR Codes
+Each bracket now comes with a QR code that can be used to share the bracket with others or open
+it on a mobile device. This QR code redirects to the tourney code page at `/code/:code`. Each QR code
+is unique to exactly one bracket.
+
+### Bracket Generator from Phrase
+
+Totally useless yet awesome at the same time! Enter any phrase and a bracket will be generated based
+on the content. Each phrase is deterministic (you get the same bracket if you enter the same phrase).
+Mess around and find phrases that result in good brackets! You can find this feature at `/phrase`.
+
 ## Future Work
 
-This is a quickly hacked together project for the 2021 NCAA Basketball Tournament. It will be expanded upon
-in the years to come. There are still a number of unimplemented features.
+This is a quickly hacked together project for the 2021 NCAA Basketball Tournament. It was polished a
+bit for the 2022 tournament, and the tourney codes were added for the 2023 tournament. It will be
+expanded upon in the years to come. There are still a number of unimplemented features.
 
 ### Testing
 
@@ -56,9 +75,3 @@ There are no tests yet. I know, I'm a bad developer. No cookie for me.
 Since the simulations heavily favor highly ranked teams, it would be nice to have a "Underdog Factor"
 scalar that can be used to slant games more towards the underdogs, thereby introducing a greater chance
 for upsets in the brackets.
-
-### Seeded Results
-
-I would like to have a hashed seed string that can be used to restore results to populate the brackets.
-Since there are 2^68 total possible brackets (that's _295 quintillion!_) it'd be great to be able to
-reproduce specific seeds. For now, the exported results files will have to do.
