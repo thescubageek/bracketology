@@ -1,0 +1,73 @@
+<div class="brackets">
+  <div class="title">2022 NCAA DIVISION I MEN'S BACKETBALL CHAMPIONSHIP</div>
+
+  <div class="shims">
+    <div class="shim date_cover"></div>
+    <div class="shim ff_date_cover"></div>
+    <div class="shim championship_date_cover"></div>
+  </div>
+
+  <div class="first_four">
+    <%= render_bracket(1, @tournament.first_four[0..1]) %>
+    <%= render_bracket(2, @tournament.first_four[2..3]) %>
+    <%= render_bracket(3, @tournament.first_four[4..5]) %>
+    <%= render_bracket(4, @tournament.first_four[6..7]) %>
+  </div>
+
+  <div class="first_round">
+    <%= render_bracket(1, @tournament.teams[0..15]) %>
+    <%= render_bracket(2, @tournament.teams[16..31]) %>
+    <%= render_bracket(3, @tournament.teams[32..47]) %>
+    <%= render_bracket(4, @tournament.teams[48..63]) %>
+  </div>
+
+  <div class="second_round">
+    <%= render_empty_bracket(1, 8) %>
+    <%= render_empty_bracket(2, 8) %>
+    <%= render_empty_bracket(3, 8) %>
+    <%= render_empty_bracket(4, 8) %>
+  </div>
+
+  <div class="sweet_sixteen">
+    <%= render_empty_bracket(1, 4) %>
+    <%= render_empty_bracket(2, 4) %>
+    <%= render_empty_bracket(3, 4) %>
+    <%= render_empty_bracket(4, 4) %>
+  </div>
+
+  <div class="elite_eight">
+    <%= render_empty_bracket(1, 2) %>
+    <%= render_empty_bracket(2, 2) %>
+    <%= render_empty_bracket(3, 2) %>
+    <%= render_empty_bracket(4, 2) %>
+  </div>
+
+  <div class="final_four">
+    <%= render_empty_bracket(1, 1) %>
+    <%= render_empty_bracket(2, 1) %>
+    <%= render_empty_bracket(3, 1) %>
+    <%= render_empty_bracket(4, 1) %>
+  </div>
+
+  <div class="championship">
+    <%= render_empty_bracket(1, 1) %>
+    <%= render_empty_bracket(2, 1) %>
+  </div>
+
+  <div class="champion">
+    <%= render_empty_bracket(1, 1) %>
+  </div>
+
+  <div class="tourney_code">
+    <div class="code"></div>
+    <div class="qr_code"></div>
+  </div>
+</div>
+
+<div class="phrase_overlay">
+  <form method="get" action="/submit_phrase">
+    <label for="phrase">Enter any phrase you want to generate a custom bracket!</label>
+    <textarea id="phrase" name="phrase" rows="3"></textarea>
+    <input type="submit" value="Generate my bracket!">
+  </form>
+</div>

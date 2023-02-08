@@ -1,6 +1,6 @@
 class TournamentController < ApplicationController
   before_action :load_import_file, except: %i[qr_code]
-  before_action :identify_tourney_code!, except: %i[index]
+  before_action :identify_tourney_code!, only: %i[show qr_code]
 
   def index
     @tournament.play(params.permit(:export))
@@ -25,6 +25,16 @@ class TournamentController < ApplicationController
     )
 
     render inline: svg, format: :svg
+  end
+
+  def enter_phrase
+    render template: 'tournament/phrase'
+  end
+
+  def submit_phrase
+    phrase = params.require(:phrase)
+    @tourney_code = Tournament.create_tourney_code_from_phrase(phrase)
+    redirect_to "/code/#{@tourney_code}"
   end
 
   private
