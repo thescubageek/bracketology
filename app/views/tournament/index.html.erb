@@ -58,6 +58,12 @@
     <%= render_bracket(1, @tournament.winner) %>
   </div>
 
+  <div class="stats">
+    <div>Maximum Points: <%= @tournament.max_total_points %></div>
+    <div>Avg Probability: <%= (@tournament.probability*100).round(4) %>%</div>
+    <div>Projected Points: <%= @tournament.projected_points %></div>
+  </div>
+
   <div class="tourney_code">
     <div class="code"><%= @tournament.code %></div>
     <div class="qr_code"><%= render_qr_code(@tournament.code) %></div>

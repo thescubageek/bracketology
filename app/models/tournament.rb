@@ -3,7 +3,7 @@ class Tournament
   class InvalidCode < StandardError; end
 
   IMPORT_TOURNAMENT_PATH = Rails.root.join('brackets', 'import').freeze
-  DEFAULT_IMPORT_FILE = -'ncaa_2021.json'
+  DEFAULT_IMPORT_FILE = 'ncaa_2022.json'
   EXPORT_TOURNAMENT_PATH = Rails.root.join('brackets', 'export').freeze
   RESULTS_TOURNAMENT_PATH = Rails.root.join('brackets', 'results').freeze
 
@@ -20,7 +20,13 @@ class Tournament
     'Championship'
   ].freeze
 
-  attr_reader :year, :rounds, :first_four, :teams, :winner, :code
+  RULES = {
+    points: [1, 2, 4, 8, 16, 32],
+    operator: '+'
+  }.freeze
+
+  attr_reader :year, :rounds, :first_four, :teams, :winner, :code,
+              :max_total_points, :probability, :projected_points
 
   class << self
     # Imports the tournament teams from a JSON file
@@ -29,7 +35,8 @@ class Tournament
     # @return [Hash<Array>] hash for first four and round of 64 teams
     def import(tourney_file)
       json = JSON.parse(File.read(tourney_file))
-      first_four = import_teams(json['first_four'])
+      # first_four = import_teams(json['first_four'])
+      first_four = [] # disable first four for this year
       teams = import_teams(json['teams'])
       new(teams, first_four)
     end
@@ -62,7 +69,7 @@ class Tournament
 
           winners.each_with_index do |winner, idx|
             results[round_name][idx] ||= {}
-            team = Team.new(winner['name'], winner['rank'])
+            team = Team.new(winner[:winner]['name'], winner[:winner]['rank'])
             key = team.to_s
             results[round_name][idx][key] ||= {
               'name'  => team.name,
@@ -127,6 +134,8 @@ class Tournament
     @year = year
     @first_four = first_four
     @teams = teams
+    @bonus_operator = RULES[:operator]
+    @round_points = RULES[:points]
   end
 
   # Resets the rounds and winners variables
@@ -135,6 +144,9 @@ class Tournament
     @rounds = []
     @winner = nil
     @code = nil
+    @probability = 0.0
+    @points = 0
+    @projected_points = 0
   end
 
   # Plays a simulation of the tournament
@@ -142,23 +154,49 @@ class Tournament
   # @param should_export [Boolean] if true, export results of the simulation
   # @param sims [Integer] number of tournaments to simulate if exporting
   # @return [Team] championship winner
-  def play(should_export = false, sims = 1)
+  def play(should_export = false, sims = 1, min_rank = 16)
     sims = 1 unless should_export
 
-    sims.times do |_|
+    top_projection = 0
+
+    sims.times do |i|
+      puts "Simulation #{i + 1}/#{sims}..."
+
       reset
-      simulate_first_four
+      simulate_first_four if first_four.present?
 
       @rounds.push(build_round(@teams))
       simulate while @winner.blank?
       @code = to_tourney_code
 
-      puts "#{year} tournament winner: #{@winner}"
-      puts "Code: #{@code}"
-      export if should_export
-      sleep 0.1 if sims > 1
+      @max_total_points = calc_max_total_points
+      @probability = calc_probability
+      @projected_points = (probability * max_total_points).floor
 
-      winner
+      results = {
+        winner: @winner,
+        points: @max_total_points,
+        probability: @probability,
+        projected_points: @projected_points,
+        code: @code
+      }
+
+      puts "#{year} tournament winner: #{@winner}; max points: #{@max_total_points}"\
+           " (#{(@probability*100).round(4)}%)"
+      puts "Code: #{@code}"
+
+      ranks = @rounds.flat_map { |r| r.winners.map(&:rank) }.uniq
+
+      # Export if it is equal to top as well, this bubbles up results
+      if ranks.exclude?(min_rank) && @projected_points >= top_projection
+        top_projection = @projected_points
+        export if should_export
+
+        puts "**** Top projected score updated: #{top_projection}"
+        export if should_export
+      end
+
+      results
     end
   end
 
@@ -207,26 +245,52 @@ class Tournament
   # @return [Round] tournament round
   def build_round(round_teams, round_name = nil)
     i = 0
-    round_name ||= ROUND_NAMES[@rounds.count]
-    round = Round.new([], round_name)
+    round_num = @rounds.count
+    round_name ||= ROUND_NAMES[round_num]
+    round = Round.new([], round_num, round_name, RULES[:points][round_num], RULES[:operator])
 
     while i + 1 < round_teams.count
-      round.games.push(Game.new(round_teams[i], round_teams[i + 1]))
+      round.games.push(
+        Game.new(round_teams[i], round_teams[i + 1], RULES[:points][round_num], RULES[:operator])
+      )
       i += 2
     end
     round
+  end
+
+  # Calculate the max total points for a simluated tournament
+  def calc_max_total_points
+    @rounds.reduce(0) do |points, round|
+      points += round.points
+    end
+  end
+
+  # Calculate the average probability of the bracket
+  def calc_probability
+    game_count = 0
+    probability = @rounds.reduce(0.0) do |prob, round|
+      game_count += round.games.count
+      round.games.each do |game|
+        prob += game.probability
+      end
+      prob
+    end
+
+    game_count > 0 ? probability / game_count : 0.0
   end
 
   # Exports the winners to a JSON file
   #
   # @return [Hash] exported JSON hash
   def export
-    export_json = { 'First Four Winners' => @first_four_winners }
+    # export_json = { 'First Four Winners' => @first_four_winners }
+    export_json = {}
     @rounds.each do |round|
       export_json["#{round.name} Winners"] = round.winners
     end
 
-    export_file = "#{EXPORT_TOURNAMENT_PATH}/#{@code}.json"
+    prefix = "%03d" % @projected_points
+    export_file = "#{EXPORT_TOURNAMENT_PATH}/#{prefix}__#{@code}.json"
     File.write(export_file, export_json.to_json)
     export_json
   end
@@ -277,8 +341,7 @@ class Tournament
       round.games.each do |game|
         bit = binary_code.slice!(0)
         winner = bit == '0' ? game.home_team : game.away_team
-        game.winner = winner
-        round.winners << winner
+        round.add_winner(game, winner)
       end
 
       if round.winners.count > 1
@@ -288,5 +351,9 @@ class Tournament
         @winner = round.winners.first
       end
     end
+
+    @max_total_points = calc_max_total_points
+    @probability = calc_probability
+    @projected_points = (probability * max_total_points).floor
   end
 end
