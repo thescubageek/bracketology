@@ -416,3 +416,94 @@
     }
   }
 }
+
+.avatar {
+  padding: 0px;
+  margin: 0px;
+
+  .avatar_tokens {
+    position: relative;
+    display: block;
+    padding: 0;
+    margin: 0;
+
+    .avatar_token {
+      position: relative;
+      display: block;
+      float: left;
+      padding: 0;
+      margin: 0;
+    }
+  }
+
+  .first_round {
+    .avatar_tokens {
+      height: 4px;
+      
+      .avatar_token {
+        width: 4px;
+        height: 4px;
+      }
+    }
+  }
+
+  .second_round {
+    .avatar_tokens {
+      height: 8px;
+      .avatar_token {
+        width: 8px;
+        height: 8px;
+      }
+    }
+  }
+
+  .sweet_sixteen {
+    .avatar_tokens {
+      height: 16px;
+      .avatar_token {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  .elite_eight {
+    .avatar_tokens {
+      height: 32px;
+      .avatar_token {
+        width: 32px;
+        height: 32px;
+      }
+    }
+  }
+
+  .final_four {
+    .avatar_tokens {
+      height: 64px;
+      .avatar_token {
+        width: 64px;
+        height: 64px;
+      }
+    }
+  }
+
+  .championship {
+    .avatar_tokens {
+      height: 128px;
+      .avatar_token {
+        width: 128px;
+        height: 128px;
+      }
+    }
+  }
+
+  .champion {
+    .avatar_tokens {
+      height: 256px;
+      .avatar_token {
+        width: 256px;
+        height: 256px;
+      }
+    }
+  }
+}

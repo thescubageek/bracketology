@@ -2,47 +2,111 @@
     "teams": [
         {
             "rank": 1,
-            "name": "Gonzaga"
-        },
-        {
-            "rank": 16,
-            "name": "Georgia St"
-        },
-        {
-            "rank": 8,
-            "name": "Boise St"
-        },
-        {
-            "rank": 9,
-            "name": "Memphis"
-        },
-        {
-            "rank": 5,
-            "name": "Connecticut"
-        },
-        {
-            "rank": 12,
-            "name": "N Mexico St"
-        },
-        {
-            "rank": 4,
-            "name": "Arkansas"
-        },
-        {
-            "rank": 13,
-            "name": "Vermont"
-        },
-        {
-            "rank": 6,
             "name": "Alabama"
         },
         {
+            "rank": 16,
+            "name": "TXCC/SEMO"
+        },
+        {
+            "rank": 8,
+            "name": "Maryland"
+        },
+        {
+            "rank": 9,
+            "name": "West Virginia"
+        },
+        {
+            "rank": 5,
+            "name": "San Diego St"
+        },
+        {
+            "rank": 12,
+            "name": "Charleston"
+        },
+        {
+            "rank": 4,
+            "name": "Virginia"
+        },
+        {
+            "rank": 13,
+            "name": "Furman"
+        },
+        {
+            "rank": 6,
+            "name": "Creighton"
+        },
+        {
             "rank": 11,
-            "name": "RUTG/ND"
+            "name": "NC State"
         },
         {
             "rank": 3,
-            "name": "Texas Tech"
+            "name": "Baylor"
+        },
+        {
+            "rank": 14,
+            "name": "UCSB"
+        },
+        {
+            "rank": 7,
+            "name": "Missouri"
+        },
+        {
+            "rank": 10,
+            "name": "Utah State"
+        },
+        {
+            "rank": 2,
+            "name": "Arizona"
+        },
+        {
+            "rank": 15,
+            "name": "Princeton"
+        },
+        {
+            "rank": 1,
+            "name": "Purdue"
+        },
+        {
+            "rank": 16,
+            "name": "TXSO/FDU"
+        },
+        {
+            "rank": 8,
+            "name": "Memphis"
+        },
+        {
+            "rank": 9,
+            "name": "FAU"
+        },
+        {
+            "rank": 5,
+            "name": "Duke"
+        },
+        {
+            "rank": 12,
+            "name": "Oral Roberts"
+        },
+        {
+            "rank": 4,
+            "name": "Tennessee"
+        },
+        {
+            "rank": 13,
+            "name": "Louisiana"
+        },
+        {
+            "rank": 6,
+            "name": "Kentucky"
+        },
+        {
+            "rank": 11,
+            "name": "Providence"
+        },
+        {
+            "rank": 3,
+            "name": "Kansas St"
         },
         {
             "rank": 14,
@@ -54,143 +118,79 @@
         },
         {
             "rank": 10,
-            "name": "Davidson"
+            "name": "USC"
         },
         {
             "rank": 2,
-            "name": "Duke"
-        },
-        {
-            "rank": 15,
-            "name": "CS Fullerton"
-        },
-        {
-            "rank": 1,
-            "name": "Baylor"
-        },
-        {
-            "rank": 16,
-            "name": "Norfolk St"
-        },
-        {
-            "rank": 8,
-            "name": "North Carolina"
-        },
-        {
-            "rank": 9,
             "name": "Marquette"
         },
         {
-            "rank": 5,
-            "name": "Saint Mary's"
-        },
-        {
-            "rank": 12,
-            "name": "WYO/IND"
-        },
-        {
-            "rank": 4,
-            "name": "UCLA"
-        },
-        {
-            "rank": 13,
-            "name": "Akron"
-        },
-        {
-            "rank": 6,
-            "name": "Texas"
-        },
-        {
-            "rank": 11,
-            "name": "Virginia Tech"
-        },
-        {
-            "rank": 3,
-            "name": "Purdue"
-        },
-        {
-            "rank": 14,
-            "name": "Yale"
-        },
-        {
-            "rank": 7,
-            "name": "Murray St"
-        },
-        {
-            "rank": 10,
-            "name": "San Franscisco"
-        },
-        {
-            "rank": 2,
-            "name": "Kentucky"
-        },
-        {
             "rank": 15,
-            "name": "St Peter's"
+            "name": "Vermont"
         },
         {
             "rank": 1,
-            "name": "Arizona"
-        },
-        {
-            "rank": 16,
-            "name": "WRST/BRY"
-        },
-        {
-            "rank": 8,
-            "name": "Seton Hall"
-        },
-        {
-            "rank": 9,
-            "name": "TCU"
-        },
-        {
-            "rank": 5,
             "name": "Houston"
         },
         {
+            "rank": 16,
+            "name": "N Kentucky"
+        },
+        {
+            "rank": 8,
+            "name": "Iowa"
+        },
+        {
+            "rank": 9,
+            "name": "Auburn"
+        },
+        {
+            "rank": 5,
+            "name": "Miami"
+        },
+        {
             "rank": 12,
-            "name": "UAB"
+            "name": "Drake"
         },
         {
             "rank": 4,
-            "name": "Illinois"
+            "name": "Indiana"
         },
         {
             "rank": 13,
-            "name": "Chattanooga"
+            "name": "Kent St"
         },
         {
             "rank": 6,
-            "name": "Colorado St"
+            "name": "Iowa St"
         },
         {
             "rank": 11,
-            "name": "Michigan"
+            "name": "MSST/Pitt"
         },
         {
             "rank": 3,
-            "name": "Tennessee"
+            "name": "Xavier"
         },
         {
             "rank": 14,
-            "name": "Longwood"
+            "name": "Kennesaw St"
         },
         {
             "rank": 7,
-            "name": "Ohio St"
+            "name": "Texas A&M"
         },
         {
             "rank": 10,
-            "name": "Loyola Chicago"
+            "name": "Penn St"
         },
         {
             "rank": 2,
-            "name": "Villanova"
+            "name": "Texas"
         },
         {
             "rank": 15,
-            "name": "Delaware"
+            "name": "Colgate"
         },
         {
             "rank": 1,
@@ -198,63 +198,63 @@
         },
         {
             "rank": 16,
-            "name": "TXSO/TAMC"
+            "name": "Howard"
         },
         {
             "rank": 8,
-            "name": "San Diego St"
+            "name": "Arkansas"
         },
         {
             "rank": 9,
-            "name": "Creighton"
+            "name": "Illinois"
         },
         {
             "rank": 5,
-            "name": "Iowa"
+            "name": "St Mary's"
         },
         {
             "rank": 12,
-            "name": "Richmond"
+            "name": "VCU"
         },
         {
             "rank": 4,
-            "name": "Providence"
+            "name": "UConn"
         },
         {
             "rank": 13,
-            "name": "S Dakota St"
+            "name": "Iona"
         },
         {
             "rank": 6,
-            "name": "LSU"
+            "name": "TCU"
         },
         {
             "rank": 11,
-            "name": "Iowa St"
+            "name": "ASU/Nev"
         },
         {
             "rank": 3,
-            "name": "Wisconsin"
+            "name": "Gonzaga"
         },
         {
             "rank": 14,
-            "name": "Colgate"
+            "name": "Grand Canyon"
         },
         {
             "rank": 7,
-            "name": "USC"
+            "name": "Northwestern"
         },
         {
             "rank": 10,
-            "name": "Miami FL"
+            "name": "Boise St"
         },
         {
             "rank": 2,
-            "name": "Auburn"
+            "name": "UCLA"
         },
         {
             "rank": 15,
-            "name": "Jax State"
+            "name": "UNC Ash"
         }
     ]
 }

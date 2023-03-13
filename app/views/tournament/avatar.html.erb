@@ -1,0 +1,45 @@
+<div class="avatar">
+  <div class="first_round">
+    <%= render_avatar_tokens(1, @tournament.teams[0..15]) %>
+    <%= render_avatar_tokens(2, @tournament.teams[16..31]) %>
+    <%= render_avatar_tokens(3, @tournament.teams[32..47]) %>
+    <%= render_avatar_tokens(4, @tournament.teams[48..63]) %>
+  </div>
+
+  <div class="second_round">
+    <%= render_avatar_tokens(1, @tournament.rounds[0].winners[0..7]) %>
+    <%= render_avatar_tokens(2, @tournament.rounds[0].winners[8..15]) %>
+    <%= render_avatar_tokens(3, @tournament.rounds[0].winners[16..23]) %>
+    <%= render_avatar_tokens(4, @tournament.rounds[0].winners[24..31]) %>
+  </div>
+
+  <div class="sweet_sixteen">
+    <%= render_avatar_tokens(1, @tournament.rounds[1].winners[0..3]) %>
+    <%= render_avatar_tokens(2, @tournament.rounds[1].winners[4..7]) %>
+    <%= render_avatar_tokens(3, @tournament.rounds[1].winners[8..11]) %>
+    <%= render_avatar_tokens(4, @tournament.rounds[1].winners[12..15]) %>
+  </div>
+
+  <div class="elite_eight">
+    <%= render_avatar_tokens(1, @tournament.rounds[2].winners[0..1]) %>
+    <%= render_avatar_tokens(2, @tournament.rounds[2].winners[2..3]) %>
+    <%= render_avatar_tokens(3, @tournament.rounds[2].winners[4..5]) %>
+    <%= render_avatar_tokens(4, @tournament.rounds[2].winners[6..7]) %>
+  </div>
+
+  <div class="final_four">
+    <%= render_avatar_tokens(1, @tournament.rounds[3].winners[0]) %>
+    <%= render_avatar_tokens(2, @tournament.rounds[3].winners[1]) %>
+    <%= render_avatar_tokens(3, @tournament.rounds[3].winners[2]) %>
+    <%= render_avatar_tokens(4, @tournament.rounds[3].winners[3]) %>
+  </div>
+
+  <div class="championship">
+    <%= render_avatar_tokens(1, @tournament.rounds[4].winners[0]) %>
+    <%= render_avatar_tokens(2, @tournament.rounds[4].winners[1]) %>
+  </div>
+
+  <div class="champion">
+    <%= render_avatar_tokens(1, @tournament.winner) %>
+  </div>
+</div>

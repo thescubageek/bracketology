@@ -2,10 +2,15 @@
 class Tournament
   class InvalidCode < StandardError; end
 
+  CURRENT_YEAR = 2023
   IMPORT_TOURNAMENT_PATH = Rails.root.join('brackets', 'import').freeze
-  DEFAULT_IMPORT_FILE = 'ncaa_2022.json'
+  DEFAULT_IMPORT_FILE = -"ncaa_#{CURRENT_YEAR}.json"
   EXPORT_TOURNAMENT_PATH = Rails.root.join('brackets', 'export').freeze
   RESULTS_TOURNAMENT_PATH = Rails.root.join('brackets', 'results').freeze
+
+  DEFAULT_TEAM_JSON = JSON.parse(
+    File.read("#{IMPORT_TOURNAMENT_PATH}/#{DEFAULT_IMPORT_FILE}")
+  ).freeze
 
   CODE_LENGTH = 13
   TOTAL_GAMES = 63
@@ -46,7 +51,7 @@ class Tournament
     # @param imported_teams [Array<Hash>] team imports with rank and name
     # @return [Array<Team>] array of new Teams
     def import_teams(imported_teams)
-      imported_teams.map do |team|
+      imported_teams.to_a.map do |team|
         Team.new(team['name'], team['rank'])
       end
     end
@@ -127,10 +132,16 @@ class Tournament
 
   # Creates a new tournament simulation
   #
-  # @param teams [Array<Team>] array of round of 64 Teams
-  # @param first_four [Array<Team>] array of firt four round of Teams
-  # @param year [Year] (Time.current.year) tournament year
-  def initialize(teams, first_four, year = Time.current.year)
+  # @param teams [Array<Team>] ([]) array of round of 64 Teams
+  # @param first_four [Array<Team>] ([]) array of first four round of Teams
+  # @param year [Year] (CURRENT_YEAR) tournament year
+  def initialize(teams = [], first_four = [], year = CURRENT_YEAR)
+    if teams.blank?
+      tourney_json = DEFAULT_TEAM_JSON
+      teams = self.class.import_teams(tourney_json['teams'])
+      first_four = self.class.import_teams(tourney_json['first_four'])
+    end
+
     @year = year
     @first_four = first_four
     @teams = teams
@@ -154,13 +165,13 @@ class Tournament
   # @param should_export [Boolean] if true, export results of the simulation
   # @param sims [Integer] number of tournaments to simulate if exporting
   # @return [Team] championship winner
-  def play(should_export = false, sims = 1, min_rank = 16)
+  def play(should_export: false, sims: 1, min_rank: 16)
     sims = 1 unless should_export
 
     top_projection = 0
 
     sims.times do |i|
-      puts "Simulation #{i + 1}/#{sims}..."
+      Rails.logger.info { "Simulation #{i + 1}/#{sims}..." }
 
       reset
       simulate_first_four if first_four.present?
@@ -169,21 +180,12 @@ class Tournament
       simulate while @winner.blank?
       @code = to_tourney_code
 
-      @max_total_points = calc_max_total_points
-      @probability = calc_probability
-      @projected_points = (probability * max_total_points).floor
+      results = calc_results
 
-      results = {
-        winner: @winner,
-        points: @max_total_points,
-        probability: @probability,
-        projected_points: @projected_points,
-        code: @code
-      }
-
-      puts "#{year} tournament winner: #{@winner}; max points: #{@max_total_points}"\
-           " (#{(@probability*100).round(4)}%)"
-      puts "Code: #{@code}"
+      Rails.logger.info do
+        "#{year} tournament winner: #{@winner}; max points: #{@max_total_points} "\
+        "(#{(@probability * 100).round(4)}%)\nCode: #{@code}"
+      end
 
       ranks = @rounds.flat_map { |r| r.winners.map(&:rank) }.uniq
 
@@ -192,7 +194,7 @@ class Tournament
         top_projection = @projected_points
         export if should_export
 
-        puts "**** Top projected score updated: #{top_projection}"
+        Rails.logger.info { "**** Top projected score updated: #{top_projection}" }
         export if should_export
       end
 
@@ -256,6 +258,20 @@ class Tournament
       i += 2
     end
     round
+  end
+
+  def calc_results
+    @max_total_points = calc_max_total_points
+    @probability = calc_probability
+    @projected_points = (probability * max_total_points).floor
+
+    {
+      winner: @winner,
+      points: @max_total_points,
+      probability: @probability,
+      projected_points: @projected_points,
+      code: @code
+    }
   end
 
   # Calculate the max total points for a simluated tournament
