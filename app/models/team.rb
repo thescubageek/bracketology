@@ -1,14 +1,16 @@
 # NCAA Basketball Tournament team
 class Team
-  attr_reader :name, :rank
+  attr_reader :name, :rank, :color
 
   # Creates a new team
   #
   # @param name [String] team name
   # @param rank [Integer] team rank
-  def initialize(name, rank)
+  # @param color [String] team color (plain text or hex)
+  def initialize(name, rank, color = nil)
     @name = name
     @rank = rank
+    @color = color || "##{SecureRandom.hex(3)}"
   end
 
   # @return [String] formatted rank and name of team

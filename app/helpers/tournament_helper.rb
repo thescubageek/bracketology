@@ -20,4 +20,12 @@ module TournamentHelper
       "<div class='team pos_#{idx}'>#{team}</div>"
     end.join("\n")
   end
+
+  def render_avatar_tokens(bracket_num, teams)
+    team_tags = Array.wrap(teams).each_with_index.map do |team, idx|
+      "<div class='avatar_token avatar_token_#{idx}' style='background-color: #{team.color}'></div>"
+    end.join("\n")
+
+    "<div class='avatar_tokens bracket_#{bracket_num}'>\n#{team_tags}</div>".html_safe
+  end
 end

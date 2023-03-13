@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   get '/c/:code', to: "tournament#show"
   get '/qr/:code', to: "tournament#qr_code"
+  get '/avatar/:code', to: "tournament#avatar"
 
   get '/phrase', to: "tournament#enter_phrase"
   get '/submit_phrase', to: "tournament#submit_phrase"
